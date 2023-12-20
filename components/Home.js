@@ -1,12 +1,24 @@
 import React from "react";
-import { View, Text, Button, TouchableOpacity, StyleSheet,Image } from "react-native";
-import bg from '../assets/bg.png'
+import {
+  View,
+  Text,
+  Button,
+  TouchableOpacity,
+  StyleSheet,
+  Image,
+} from "react-native";
+import bg from "../assets/bg.png";
 export default function Home({ navigation }) {
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Loco</Text>
-      <Text style={styles.subtitle}>Tracking your location in real-time with Loco.</Text>
-      <Image source={bg} style={{height:'20%',width:'50%',marginVertical:30}}/>
+      <Text style={styles.subtitle}>
+        Tracking your location in real-time with Loco.
+      </Text>
+      <Image
+        source={bg}
+        style={{ height: "20%", width: "50%", marginVertical: 30 }}
+      />
       <TouchableOpacity
         style={styles.signupButton}
         onPress={() => {

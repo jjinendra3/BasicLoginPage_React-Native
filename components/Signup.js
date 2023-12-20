@@ -4,16 +4,15 @@ import ParallaxScrollView from "react-native-parallax-scroll-view";
 import mountain from "../assets/download.jpg";
 import ImagePicker from "./ImagePicker";
 import user from "../assets/user.jpg";
-
-export default function Signup({navigation}) {
+export default function Signup({ navigation,route }) {
+  const {img,setimg}=route.params;
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [age, setAge] = useState(""); // Initial age value
-  const [profilePic, setProfilePic] = useState(null);
+  const [age, setAge] = useState("");
   const handleSignup = () => {
-    console.log("Signing up:", { name, email, password, age, profilePic });
-    navigation.navigate('Homer');
+    console.log("Signing up:", { name, email, password, age, img });
+    navigation.navigate("MainPage");
   };
 
   return (
@@ -29,15 +28,17 @@ export default function Signup({navigation}) {
         <Text style={styles.title}>Signup</Text>
 
         <View style={styles.profileSection}>
-          {profilePic ? (
-            <Image source={{ uri: profilePic }} style={styles.profilePic} />
+          {img ? (
+            <Image source={{ uri: img }} style={styles.profilePic} />
           ) : (
             <Image source={user} style={styles.profilePic} />
           )}
           <View style={styles.imagePickerSection}>
             <Text>Profile Picture</Text>
-            <ImagePicker setimg={setProfilePic} />
-            <Button title="Capture from Camera" onPress={{}} />
+            <ImagePicker setimg={setimg} />
+            <Button title="Take Picture" onPress={()=>{
+              navigation.navigate('cam');
+            }}/>
           </View>
         </View>
 

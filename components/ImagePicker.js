@@ -46,7 +46,6 @@ const Imager = ({ setimg }) => {
   };
   return (
     <View>
-      
       <Button title="Select Image" onPress={totaler} />
     </View>
   );

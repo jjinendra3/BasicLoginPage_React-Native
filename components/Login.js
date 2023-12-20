@@ -3,12 +3,12 @@ import { View, Text, TextInput, Button, Image, StyleSheet } from "react-native";
 import ParallaxScrollView from "react-native-parallax-scroll-view";
 import mountain from "../assets/download.jpg";
 
-export default function Signup({navigation}) {
+export default function Signup({ navigation }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const handleLogin = () => {
-    console.log("Logging in:", {  email, password });
-    navigation.navigate('Mainpage');
+    console.log("Logging in:", { email, password });
+    navigation.navigate("MainPage");
   };
 
   return (
