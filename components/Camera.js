@@ -1,11 +1,12 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { View, Text, TouchableOpacity } from "react-native";
 import { Camera } from "expo-camera";
+import Context from "../ContextAPI";
 
-const TakePictureComponent = ({ route }) => {
+const TakePictureComponent = ({ navigation }) => {
   const [hasPermission, setHasPermission] = useState(null);
   const [cameraRef, setCameraRef] = useState(null);
-
+  const context = useContext(Context);
   useEffect(() => {
     (async () => {
       const { status } = await Camera.requestCameraPermissionsAsync();
@@ -16,7 +17,8 @@ const TakePictureComponent = ({ route }) => {
   const takePicture = async () => {
     if (cameraRef) {
       const photo = await cameraRef.takePictureAsync({ quality: 0.5 });
-      route.params.setimg(photo.uri);
+      context.setimg(photo);
+      navigation.navigate("Signup");
     }
   };
 

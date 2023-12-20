@@ -40,8 +40,8 @@ const Imager = ({ setimg }) => {
       quality: 1,
     });
     if (!result.canceled) {
-      setfirst(result.assets[0].uri);
-      setimg(result.assets[0].uri);
+      setfirst(result.assets[0]);
+      setimg(result.assets[0]);
     }
   };
   return (

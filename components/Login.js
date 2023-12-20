@@ -1,13 +1,25 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { View, Text, TextInput, Button, Image, StyleSheet } from "react-native";
 import ParallaxScrollView from "react-native-parallax-scroll-view";
 import mountain from "../assets/download.jpg";
+import axios from "axios";
+import Context from "../ContextAPI";
 
 export default function Signup({ navigation }) {
+  const context = useContext(Context);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const handleLogin = () => {
-    console.log("Logging in:", { email, password });
+  const handleLogin = async () => {
+    const response = await axios.post(
+      "https://api.apptask.thekaspertech.com/api/users/login",
+      {
+        email: email,
+        password: password,
+      }
+    );
+    console.log(response.data);
+    context.settoken(response.data.token);
+    context.setuserdetails(response.data.user);
     navigation.navigate("MainPage");
   };
 

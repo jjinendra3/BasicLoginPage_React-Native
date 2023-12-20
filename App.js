@@ -6,26 +6,51 @@ import MainPage from "./components/MainPage";
 import Login from "./components/Login";
 import { StatusBar } from "expo-status-bar";
 import { View } from "react-native";
-import Camera from './components/Camera'
+import Camera from "./components/Camera";
 import { useState } from "react";
+import Kasper from "./Data";
 const Stack = createNativeStackNavigator();
 export default function App() {
-  const [img, setimg] = useState(null)
+  const [img, setimg] = useState(null);
   return (
     <>
       <NavigationContainer>
         <StatusBar />
-        <Stack.Navigator >
-          <Stack.Screen name="Homer" component={Homer} options={{ headerShown: false }}/>
-          <Stack.Screen name="Signup" component={Signup} options={{ headerShown: false }} initialParams={{img:img,setimg:setimg}}/>
-          <Stack.Screen name="Login" component={Login} options={{ headerShown: false }} />
-          <Stack.Screen name="MainPage" component={MainPage} options={{headerLeft: ()=>{
-            return(
-              <View></View>
-            )
-          },headerTitleAlign: "center",}}/>
-          <Stack.Screen name="cam" component={Camera} initialParams={{setimg:setimg}}/>
-        </Stack.Navigator>
+        <Kasper>
+          <Stack.Navigator>
+            <Stack.Screen
+              name="Homer"
+              component={Homer}
+              options={{ headerShown: false }}
+            />
+            <Stack.Screen
+              name="Signup"
+              component={Signup}
+              options={{ headerShown: false }}
+              initialParams={{ img: img, setimg: setimg }}
+            />
+            <Stack.Screen
+              name="Login"
+              component={Login}
+              options={{ headerShown: false }}
+            />
+            <Stack.Screen
+              name="MainPage"
+              component={MainPage}
+              options={{
+                headerLeft: () => {
+                  return <View></View>;
+                },
+                headerTitleAlign: "center",
+              }}
+            />
+            <Stack.Screen
+              name="cam"
+              component={Camera}
+              initialParams={{ setimg: setimg }}
+            />
+          </Stack.Navigator>
+        </Kasper>
       </NavigationContainer>
     </>
   );

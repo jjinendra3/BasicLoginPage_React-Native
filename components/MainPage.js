@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import {
   View,
   Text,
@@ -8,6 +8,7 @@ import {
   Alert,
   Linking,
 } from "react-native";
+import Context from "../ContextAPI";
 import user from "../assets/user.jpg";
 import * as Location from "expo-location";
 const GeneralStatistics = ({ data }) => {
@@ -18,9 +19,11 @@ const GeneralStatistics = ({ data }) => {
         data={data}
         keyExtractor={(item) => item.id.toString()}
         renderItem={({ item }) => (
-          <View style={styles.statisticItem}>
-            <Text>{item.label}</Text>
-            <Text style={styles.statisticValue}>{item.value}</Text>
+          <View style={styles.personalInfoSection}>
+            <View style={styles.inside}>
+              <Text>{item.label}</Text>
+              <Text style={styles.statisticValue}>{item.value}</Text>
+            </View>
           </View>
         )}
       />
@@ -29,6 +32,8 @@ const GeneralStatistics = ({ data }) => {
 };
 
 const MainPage = ({ navigation }) => {
+  const context = useContext(Context);
+  const { name, age, coordinates, email, image_url } = context.userdetails;
   const [location, setLocation] = useState();
   const getLocation = async () => {
     let { status } = await Location.requestForegroundPermissionsAsync();
@@ -67,8 +72,25 @@ const MainPage = ({ navigation }) => {
     );
   };
   useEffect(() => {
+    async function sender() {
+      await axios.post(
+        "",
+        {
+          coordinates: {
+            latitude: 22.3,
+            longitude: 77.5,
+          },
+        },
+        {
+          headers: {
+            "x-auth-token": context.token,
+          },
+        }
+      );
+    }
     getLocation();
-  }, []);
+    sender();
+  });
   const generalStatsData = [
     { id: 1, label: "Places Visited", value: "30" },
     { id: 2, label: "Hours Traveled", value: "150" },
@@ -78,19 +100,16 @@ const MainPage = ({ navigation }) => {
     <View style={styles.container}>
       {/* Profile Section */}
       <View style={styles.profileSection}>
-        <Image
-          source={user} // Replace with the path to your profile photo
-          style={styles.profilePhoto}
-        />
-        <Text style={styles.profileName}>John Doe</Text>
+        <Image source={{ uri: image_url }} style={styles.profilePhoto} />
+        <Text style={styles.profileName}>{name}</Text>
         <Text style={styles.profileCity}>New York</Text>
       </View>
 
       {/* Personal Information */}
       <View style={styles.personalInfoSection}>
         <View style={styles.inside}>
-          <Text>Email: john.doe@example.com</Text>
-          <Text>Age: 25</Text>
+          <Text>Email: {email}</Text>
+          <Text>Age: {age}</Text>
         </View>
       </View>
 

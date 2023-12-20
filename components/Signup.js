@@ -1,17 +1,51 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { View, Text, TextInput, Button, Image, StyleSheet } from "react-native";
 import ParallaxScrollView from "react-native-parallax-scroll-view";
 import mountain from "../assets/download.jpg";
-import ImagePicker from "./ImagePicker";
 import user from "../assets/user.jpg";
-export default function Signup({ navigation,route }) {
-  const {img,setimg}=route.params;
+import Context from "../ContextAPI";
+import axios from "axios";
+import ImagePicker from "./ImagePicker";
+export default function Signup({ navigation }) {
+  const context = useContext(Context);
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [age, setAge] = useState("");
-  const handleSignup = () => {
-    console.log("Signing up:", { name, email, password, age, img });
+  const { img, setimg } = context;
+  const handleSignup = async () => {
+    try {
+      if (!img) {
+        console.error("Profile picture is missing.");
+        return;
+      }
+
+      const formdata = new FormData();
+
+      formdata.append("name", name);
+      formdata.append("email", email);
+      formdata.append("password", password);
+      formdata.append("age", age);
+      formdata.append("profile_picture", {
+        uri: img.uri,
+        type: "image",
+        name: "profilepic.jpg",
+      });
+
+      const response = await axios.post(
+        "https://api.apptask.thekaspertech.com/api/users/register",
+        formdata,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
+
+      console.log(response.data);
+    } catch (error) {
+      console.error("Error during signup:", error);
+    }
     navigation.navigate("MainPage");
   };
 
@@ -29,16 +63,19 @@ export default function Signup({ navigation,route }) {
 
         <View style={styles.profileSection}>
           {img ? (
-            <Image source={{ uri: img }} style={styles.profilePic} />
+            <Image source={{ uri: img.uri }} style={styles.profilePic} />
           ) : (
             <Image source={user} style={styles.profilePic} />
           )}
           <View style={styles.imagePickerSection}>
             <Text>Profile Picture</Text>
             <ImagePicker setimg={setimg} />
-            <Button title="Take Picture" onPress={()=>{
-              navigation.navigate('cam');
-            }}/>
+            <Button
+              title="Take Picture"
+              onPress={() => {
+                navigation.navigate("cam");
+              }}
+            />
           </View>
         </View>
 
@@ -67,7 +104,7 @@ export default function Signup({ navigation,route }) {
           value={age}
           onChangeText={setAge}
         />
-        <Button title="Sign Up" onPress={handleSignup} />
+        <Button title="Create Account" onPress={handleSignup} />
       </View>
     </ParallaxScrollView>
   );
